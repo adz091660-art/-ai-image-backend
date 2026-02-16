@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify
 import requests
+import os
 
 app = Flask(__name__)
 
-OPENAI_API_KEY = "ضع_مفتاحك_هنا"
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 @app.route("/generate", methods=["POST"])
 def generate_image():
@@ -11,7 +12,7 @@ def generate_image():
     prompt = data.get("prompt")
 
     response = requests.post(
-        "https://api.openai.com/v1/images/generations",
+        "https://api.openai.com/v1/images",
         headers={
             "Authorization": f"Bearer {OPENAI_API_KEY}",
             "Content-Type": "application/json"
@@ -26,4 +27,4 @@ def generate_image():
     return jsonify(response.json())
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run()
